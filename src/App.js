@@ -23,14 +23,20 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:4000/notebooks')
-      .then(res => res.json())
-      .then(notebooks => {
-        this.setState({ notebooks: notebooks }, () => {
-          var bookIndex = this.state.currentBookIndex;        
-          this.loadNotes(bookIndex);
-        });
-      })
+    window.addEventListener('beforeunload', () => {
+      var data = {
+        currentBookIndex: this.state.currentBookIndex,
+        currentNoteId: this.state.currentNote ? this.state.currentNote.id : null
+      };
+      localStorage.setItem('evernoteEditData', JSON.stringify(data));
+    });
+
+    var json = localStorage.getItem('evernoteEditData');
+    if (json) {
+      var data = JSON.parse(json);
+      this.setState({ currentBookIndex: data.currentBookIndex });
+    }
+    this.loadNotebooks(data);
   }
 
   render() {
@@ -127,6 +133,21 @@ class App extends Component {
         }
       </div>
     );
+  }
+
+  loadNotebooks(editData) {
+    editData = editData || {};
+    fetch('http://localhost:4000/notebooks')
+      .then(res => res.json())
+      .then(notebooks => {
+        this.setState({ notebooks: notebooks }, () => {
+          var bookIndex = editData.currentBookIndex || 0;
+          this.loadNotes(bookIndex);
+          if (editData.currentNoteId) {
+            this.loadNote(editData.currentNoteId);
+          }
+        });
+      })
   }
 
   loadNotes(bookIndex) {
