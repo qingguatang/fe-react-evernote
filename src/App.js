@@ -29,7 +29,7 @@ class App extends Component {
                     </div>
                     <button className="button trash"><i className="iconfont icon-trash"></i></button>
                   </li>
-                  <li className="notebook-item">
+                  <li className="notebook-item active">
                     <div className="title has-icon">
                       <i className="iconfont icon-book"></i>
                       读书笔记
@@ -60,10 +60,10 @@ class App extends Component {
           <div className="body">
             <ul className="notes-list">
               <li>
-                <div className="note-brief">
-                  <div className="header">新建笔记</div>
+                <div className="note-brief active">
+                  <div className="header">读《深入理解ES6》</div>
                   <div className="body">
-                    笔记概要
+                    不识老尼，枉为前端攻城狮，其成名作《JS高级程序设计》曾名动江湖。
                   </div>
                   <div className="footer">
                     <div className="datetime">刚刚</div>
@@ -94,10 +94,10 @@ class App extends Component {
           <div className="header">
             <div className="category has-icon">
               <i className="iconfont icon-notebook"></i>
-              我的2018
+              读书笔记
             </div>
             <div className="title">
-              <input type="text" value="标题" />
+              <input type="text" value="读《深入理解ES6》" />
             </div>
           </div>
           <div className="body">
@@ -105,7 +105,7 @@ class App extends Component {
               <textarea></textarea>
             </div>
             <div className="preview">
-              <div>内容</div>
+              <div></div>
             </div>
           </div>
         </div>
