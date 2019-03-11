@@ -5,6 +5,30 @@
     { "id": 3, "name": "读书笔记" }
   ],
 
+  "notes": [
+    {
+      "id": 1,
+      "title": "读《深入理解ES6》",
+      "body": "不识老尼，枉为前端攻城狮，其成名作《JS高级程序设计》曾名动江湖。",
+      "datetime": "Mon Mar 11 2019 13:34:51 GMT+0800",
+      "notebookId": 3
+    },
+    {
+      "id": 2,
+      "title": "读《深入理解ES6》2",
+      "body": "不识老尼，枉为前端攻城狮，其成名作《JS高级程序设计》曾名动江湖。",
+      "datetime": "Mon Mar 11 2019 13:34:51 GMT+0800",
+      "notebookId": 3
+    },
+    {
+      "id": 3,
+      "title": "随笔",
+      "body": "今天天气晴",
+      "datetime": "Mon Mar 11 2019 13:34:51 GMT+0800",
+      "notebookId": 1
+    }
+  ],
+
   "posts": [
     { "id": 1, "title": "json-server", "author": "typicode" },
     { "id": 1, "title": "json-server", "author": "typicode" },

@@ -8,7 +8,10 @@ class App extends Component {
     super(props);
 
     this.state = {
-      notebooks: []
+      notebooks: [],
+
+      currentBookIndex: 0,
+      notes: []
     };
   }
 
@@ -16,12 +19,16 @@ class App extends Component {
     fetch('http://localhost:4000/notebooks')
       .then(res => res.json())
       .then(data => {
-        this.setState({ notebooks: data });
+        this.setState({ notebooks: data }, () => {
+          var bookIndex = this.state.currentBookIndex;        
+          this.handleLoadNotes(bookIndex);
+        });
       })
   }
 
   render() {
     var notebooks = this.state.notebooks;
+    var notes = this.state.notes;
     // if (!notebooks) {
     //   return null;
     // }
@@ -43,8 +50,10 @@ class App extends Component {
               </div>
               <div className="body">
                 <ul className="notebooks-list">
-                {notebooks.map(notebook => (
-                  <li key={notebook.id} className="notebook-item">
+                {notebooks.map((notebook, index) => (
+                  <li key={notebook.id}
+                      className={'notebook-item ' + (this.state.currentBookIndex === index ? 'active' : '')}
+                      onClick={() => this.handleLoadNotes(index)}>
                     <div className="title has-icon">
                       <i className="iconfont icon-book"></i>
                       {notebook.name}
@@ -61,34 +70,24 @@ class App extends Component {
           <div className="header">读书笔记</div>
           <div className="body">
             <ul className="notes-list">
-              <li>
-                <div className="note-brief active">
-                  <div className="header">读《深入理解ES6》</div>
-                  <div className="body">
-                    不识老尼，枉为前端攻城狮，其成名作《JS高级程序设计》曾名动江湖。
-                  </div>
-                  <div className="footer">
-                    <div className="datetime">刚刚</div>
-                    <button className="trash button">
-                      <i className="iconfont icon-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </li>
+            {
+              notes.map(note => (
               <li>
                 <div className="note-brief">
-                  <div className="header">新建笔记</div>
+                  <div className="header">{note.title}</div>
                   <div className="body">
-                    笔记概要
+                  {note.body}
                   </div>
                   <div className="footer">
-                    <div className="datetime">2019-3-5</div>
+                    <div className="datetime">{note.datetime}</div>
                     <button className="trash button">
                       <i className="iconfont icon-trash"></i>
                     </button>
                   </div>
                 </div>
               </li>
+              ))
+            }
             </ul>
           </div>
         </div>
@@ -113,6 +112,18 @@ class App extends Component {
         </div>
       </div>
     );
+  }
+
+  handleLoadNotes(bookIndex) {
+    this.setState({ currentBookIndex: bookIndex });
+
+    var data = this.state.notebooks;
+    var book = data[bookIndex];
+    fetch('http://localhost:4000/notes?notebookId=' + book.id)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ notes: data });
+      }) 
   }
 }
 
