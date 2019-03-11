@@ -4,7 +4,28 @@ import './App.scss';
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      notebooks: []
+    };
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:4000/notebooks')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ notebooks: data });
+      })
+  }
+
   render() {
+    var notebooks = this.state.notebooks;
+    // if (!notebooks) {
+    //   return null;
+    // }
+
     return (
       <div className="app">
         <div className="sidebar">
@@ -22,34 +43,15 @@ class App extends Component {
               </div>
               <div className="body">
                 <ul className="notebooks-list">
-                  <li className="notebook-item">
+                {notebooks.map(notebook => (
+                  <li key={notebook.id} className="notebook-item">
                     <div className="title has-icon">
                       <i className="iconfont icon-book"></i>
-                      默认笔记本
+                      {notebook.name}
                     </div>
                     <button className="button trash"><i className="iconfont icon-trash"></i></button>
                   </li>
-                  <li className="notebook-item active">
-                    <div className="title has-icon">
-                      <i className="iconfont icon-book"></i>
-                      读书笔记
-                    </div>
-                    <button className="button trash"><i className="iconfont icon-trash"></i></button>
-                  </li>
-                  <li className="notebook-item">
-                    <div className="title has-icon">
-                      <i className="iconfont icon-book"></i>
-                      吃喝玩乐
-                    </div>
-                    <button className="button trash"><i className="iconfont icon-trash"></i></button>
-                  </li>
-                  <li className="notebook-item">
-                    <div className="title has-icon">
-                      <i className="iconfont icon-book"></i>
-                      我的2019
-                    </div>
-                    <button className="button trash"><i className="iconfont icon-trash"></i></button>
-                  </li>
+                ))}
               </ul>
               </div>
             </div>
