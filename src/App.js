@@ -77,11 +77,13 @@ class App extends Component {
             {
               notes.map(note => (
               <li>
-                <div className={'note-brief ' + (currentNote && currentNote.id === note.id ? 'active' : '')}
-                    onClick={() => this.loadNote(note.id)}>
-                  <div className="header">{note.title}</div>
-                  <div className="body">
-                  {note.body}
+                <div className={'note-brief ' + (currentNote && currentNote.id === note.id ? 'active' : '')}>
+                  <div class="box"
+                      onClick={() => this.loadNote(note.id)}>
+                    <div className="header">{note.title}</div>
+                    <div className="body">
+                    {note.body}
+                    </div>
                   </div>
                   <div className="footer">
                     <div className="datetime">{note.datetime}</div>
