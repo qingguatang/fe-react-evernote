@@ -77,7 +77,8 @@ class App extends Component {
             {
               notes.map(note => (
               <li>
-                <div className="note-brief" onClick={() => this.loadNote(note.id)}>
+                <div className={'note-brief ' + (currentNote && currentNote.id === note.id ? 'active' : '')}
+                    onClick={() => this.loadNote(note.id)}>
                   <div className="header">{note.title}</div>
                   <div className="body">
                   {note.body}
@@ -103,15 +104,17 @@ class App extends Component {
               {this.getNoteBook(currentNote.id).name}
             </div>
             <div className="title">
-              <input type="text" value={currentNote.title} />
+              <input type="text" value={currentNote.title || ''}
+                onChange={e => this.updateNote('title', e.target.value)} />
             </div>
           </div>
           <div className="body">
             <div className="editor">
-              <textarea value={currentNote.body}></textarea>
+              <textarea value={currentNote.body}
+                onChange={e => this.updateNote('body', e.target.value)}></textarea>
             </div>
             <div className="preview">
-              <div dangerouslySetInnerHTML={{ __html: marked(currentNote.body) }}></div>
+              <div dangerouslySetInnerHTML={{ __html: marked(currentNote.body || '') }}></div>
             </div>
           </div>
         </div> : null
@@ -147,6 +150,25 @@ class App extends Component {
     // return books.find(function(book) {
     //   return book.id === bookId;
     // });
+  }
+
+  updateNote(field, value) {
+    var note = this.state.currentNote;
+    note[field] = value;
+    this.setState({ note: note});
+
+    var opts = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    }
+    fetch('http://localhost:4000/notes/' + note.id, opts)
+      .then(res => res.json())
+      .then(data => {
+        console.log('success!', data);
+      })  
   }
 }
 
