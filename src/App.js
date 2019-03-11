@@ -63,7 +63,21 @@ class App extends Component {
                 <div className="note-brief">
                   <div className="header">新建笔记</div>
                   <div className="body">
-                    笔记简要内容
+                    笔记概要
+                  </div>
+                  <div className="footer">
+                    <div className="datetime">刚刚</div>
+                    <button className="trash button">
+                      <i className="iconfont icon-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div className="note-brief">
+                  <div className="header">新建笔记</div>
+                  <div className="body">
+                    笔记概要
                   </div>
                   <div className="footer">
                     <div className="datetime">2019-3-5</div>
