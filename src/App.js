@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'normalize.css';
 import 'github-markdown-css';
 import marked from 'marked';
+import cx from 'classnames';
 import Swal from 'sweetalert2';
 import dateUtil from './utils/date';
 import './App.scss';
@@ -59,7 +60,7 @@ class App extends Component {
                 <ul className="notebooks-list">
                 {notebooks.map((notebook, index) => (
                   <li key={notebook.id}
-                      className={'notebook-item ' + (this.state.currentBookIndex === index ? 'active' : '')}
+                      className={cx('notebook-item', { active: this.state.currentBookIndex === index })}
                       onClick={() => this.loadNotes(index)}>
                     <div className="title has-icon">
                       <i className="iconfont icon-book"></i>
@@ -80,7 +81,7 @@ class App extends Component {
             {
               notes.map(note => (
               <li key={note.id}>
-                <div className={'note-brief ' + (currentNote && currentNote.id === note.id ? 'active' : '')}>
+                <div className={cx('note-brief', { active: currentNote && currentNote.id === note.id })}>
                   <div className="box"
                       onClick={() => this.loadNote(note.id)}>
                     <div className="header">{note.title}</div>
