@@ -61,9 +61,11 @@ class App extends Component {
             <ul className="notes-list">
               <li>
                 <div className="note-brief active">
-                  <div className="header">读《深入理解ES6》</div>
-                  <div className="body">
-                    不识老尼，枉为前端攻城狮，其成名作《JS高级程序设计》曾名动江湖。
+                  <div className="box">
+                    <div className="header">读《深入理解ES6》</div>
+                    <div className="body">
+                      不识老尼，枉为前端攻城狮，其成名作《JS高级程序设计》曾名动江湖。
+                    </div>
                   </div>
                   <div className="footer">
                     <div className="datetime">刚刚</div>
@@ -75,9 +77,11 @@ class App extends Component {
               </li>
               <li>
                 <div className="note-brief">
-                  <div className="header">新建笔记</div>
-                  <div className="body">
-                    笔记概要
+                  <div className="box">
+                    <div className="header">新建笔记</div>
+                    <div className="body">
+                      笔记概要
+                    </div>
                   </div>
                   <div className="footer">
                     <div className="datetime">2019-3-5</div>

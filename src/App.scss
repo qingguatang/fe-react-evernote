@@ -146,12 +146,17 @@ ul, li {
       display: flex;
       flex-direction: column;
       width: 180px;
-      background: #fff;
-      border: 1px solid #e6e6e6;
       font-size: 14px;
 
+      >.box {
+        border: 1px solid #e6e6e6;
+        background: #fff;
+      }
+
       &.active {
-        border: 2px solid #2196f3;
+        >.box {
+          border: 2px solid #2196f3;
+        }
       }
 
       .header {
@@ -172,7 +177,6 @@ ul, li {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: -22px;
         height: 22px;
       }
       .datetime {
