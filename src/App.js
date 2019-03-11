@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'normalize.css';
+import marked from 'marked';
 import './App.scss';
 
 
@@ -11,17 +12,19 @@ class App extends Component {
       notebooks: [],
 
       currentBookIndex: 0,
-      notes: []
+      notes: [],
+
+      currentNote: null
     };
   }
 
   componentDidMount() {
     fetch('http://localhost:4000/notebooks')
       .then(res => res.json())
-      .then(data => {
-        this.setState({ notebooks: data }, () => {
+      .then(notebooks => {
+        this.setState({ notebooks: notebooks }, () => {
           var bookIndex = this.state.currentBookIndex;        
-          this.handleLoadNotes(bookIndex);
+          this.loadNotes(bookIndex);
         });
       })
   }
@@ -29,6 +32,7 @@ class App extends Component {
   render() {
     var notebooks = this.state.notebooks;
     var notes = this.state.notes;
+    var currentNote = this.state.currentNote;
     // if (!notebooks) {
     //   return null;
     // }
@@ -53,7 +57,7 @@ class App extends Component {
                 {notebooks.map((notebook, index) => (
                   <li key={notebook.id}
                       className={'notebook-item ' + (this.state.currentBookIndex === index ? 'active' : '')}
-                      onClick={() => this.handleLoadNotes(index)}>
+                      onClick={() => this.loadNotes(index)}>
                     <div className="title has-icon">
                       <i className="iconfont icon-book"></i>
                       {notebook.name}
@@ -73,7 +77,7 @@ class App extends Component {
             {
               notes.map(note => (
               <li>
-                <div className="note-brief">
+                <div className="note-brief" onClick={() => this.loadNote(note.id)}>
                   <div className="header">{note.title}</div>
                   <div className="body">
                   {note.body}
@@ -91,39 +95,58 @@ class App extends Component {
             </ul>
           </div>
         </div>
+        {currentNote ?
         <div className="note-panel">
           <div className="header">
             <div className="category has-icon">
               <i className="iconfont icon-notebook"></i>
-              读书笔记
+              {this.getNoteBook(currentNote.id).name}
             </div>
             <div className="title">
-              <input type="text" value="读《深入理解ES6》" />
+              <input type="text" value={currentNote.title} />
             </div>
           </div>
           <div className="body">
             <div className="editor">
-              <textarea></textarea>
+              <textarea value={currentNote.body}></textarea>
             </div>
             <div className="preview">
-              <div></div>
+              <div dangerouslySetInnerHTML={{ __html: marked(currentNote.body) }}></div>
             </div>
           </div>
-        </div>
+        </div> : null
+        }
       </div>
     );
   }
 
-  handleLoadNotes(bookIndex) {
+  loadNotes(bookIndex) {
     this.setState({ currentBookIndex: bookIndex });
 
     var data = this.state.notebooks;
     var book = data[bookIndex];
     fetch('http://localhost:4000/notes?notebookId=' + book.id)
       .then(res => res.json())
-      .then(data => {
-        this.setState({ notes: data });
+      .then(notes => {
+        this.setState({ notes: notes });
       }) 
+  }
+
+  loadNote(id) {
+    fetch('http://localhost:4000/notes/' + id)
+      .then(res => res.json())
+      .then(note => {
+        console.log(note)
+        this.setState({ currentNote: note });
+      })  
+  }
+
+  getNoteBook(bookId) {
+    var books = this.state.notebooks;
+    return books.find(book => book.id === bookId);
+    // return books.find(function(book) {
+    //   return book.id === bookId;
+    // });
   }
 }
 

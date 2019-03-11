@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "json-server": "^0.14.2",
+    "marked": "^0.6.1",
     "node-sass": "^4.11.0",
     "normalize.css": "^8.0.1",
     "react": "^16.8.4",
