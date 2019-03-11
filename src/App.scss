@@ -149,7 +149,6 @@ ul, li {
       font-size: 14px;
 
       >.box {
-        margin-bottom: 4px;
         border: 1px solid #e6e6e6;
         background: #fff;
       }
@@ -178,6 +177,7 @@ ul, li {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        height: 22px;
       }
       .datetime {
         font-size: 12px;

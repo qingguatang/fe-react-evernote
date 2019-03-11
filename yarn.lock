@@ -4303,6 +4303,11 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+github-markdown-css@^3.0.1:
+  version "3.0.1"
+  resolved "http://registry.npm.taobao.org/github-markdown-css/download/github-markdown-css-3.0.1.tgz#d08db1060d2e182025e0d07d547cfe2afed30205"
+  integrity sha1-0I2xBg0uGCAl4NB9VHz+Kv7TAgU=
+
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -9661,6 +9666,11 @@ svgo@^1.0.0, svgo@^1.1.1:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+sweetalert2@^8.2.6:
+  version "8.2.6"
+  resolved "http://registry.npm.taobao.org/sweetalert2/download/sweetalert2-8.2.6.tgz#1381739f164b807917f6054652fd173187a497c5"
+  integrity sha1-E4FznxZLgHkX9gVGUv0XMYekl8U=
 
 symbol-tree@^3.2.2:
   version "3.2.2"

@@ -3,6 +3,7 @@ import 'normalize.css';
 import 'github-markdown-css';
 import marked from 'marked';
 import Swal from 'sweetalert2';
+import dateUtil from './utils/date';
 import './App.scss';
 
 
@@ -88,7 +89,7 @@ class App extends Component {
                     </div>
                   </div>
                   <div className="footer">
-                    <div className="datetime">{note.datetime}</div>
+                    <div className="datetime">{dateUtil.friendly(note.datetime)}</div>
                     <button className="trash button" onClick={() => this.deleteNote(note.id)}>
                       <i className="iconfont icon-trash"></i>
                     </button>
@@ -195,6 +196,7 @@ class App extends Component {
       },
       body: JSON.stringify(note)
     }
+
     fetch('http://localhost:4000/notes/', opts)
       .then(res => res.json())
       .then(data => {
