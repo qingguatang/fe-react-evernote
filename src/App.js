@@ -41,7 +41,7 @@ class App extends Component {
       <div className="app">
         <div className="sidebar">
           <div className="header">
-            <button className="button adder">
+            <button className="button adder" onClick={() => this.addNote()}>
               <i className="iconfont icon-add"></i>
               新建笔记
             </button>
@@ -76,9 +76,9 @@ class App extends Component {
             <ul className="notes-list">
             {
               notes.map(note => (
-              <li>
+              <li key={note.id}>
                 <div className={'note-brief ' + (currentNote && currentNote.id === note.id ? 'active' : '')}>
-                  <div class="box"
+                  <div className="box"
                       onClick={() => this.loadNote(note.id)}>
                     <div className="header">{note.title}</div>
                     <div className="body">
@@ -103,7 +103,7 @@ class App extends Component {
           <div className="header">
             <div className="category has-icon">
               <i className="iconfont icon-notebook"></i>
-              {this.getNoteBook(currentNote.id).name}
+              {this.getNoteBook(currentNote.notebookId).name}
             </div>
             <div className="title">
               <input type="text" value={currentNote.title || ''}
@@ -127,7 +127,6 @@ class App extends Component {
 
   loadNotes(bookIndex) {
     this.setState({ currentBookIndex: bookIndex });
-
     var data = this.state.notebooks;
     var book = data[bookIndex];
     fetch('http://localhost:4000/notes?notebookId=' + book.id)
@@ -135,6 +134,11 @@ class App extends Component {
       .then(notes => {
         this.setState({ notes: notes });
       }) 
+  }
+
+  reloadNotes() {
+    var bookIndex = this.state.currentBookIndex;
+    this.loadNotes(bookIndex);
   }
 
   loadNote(id) {
@@ -170,6 +174,29 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         console.log('success!', data);
+      })  
+  }
+
+  addNote() {
+    var currentBook = this.state.notebooks[this.state.currentBookIndex];
+    var note = {
+      title: '新建笔记',
+      body: '',
+      datetime: new Date().toString(),
+      notebookId: currentBook.id
+    };
+
+    var opts = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    }
+    fetch('http://localhost:4000/notes/', opts)
+      .then(res => res.json())
+      .then(data => {
+        this.reloadNotes();
       })  
   }
 }
