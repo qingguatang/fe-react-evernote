@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import 'normalize.css';
+import 'github-markdown-css';
 import marked from 'marked';
+import Swal from 'sweetalert2';
 import './App.scss';
 
 
@@ -87,7 +89,7 @@ class App extends Component {
                   </div>
                   <div className="footer">
                     <div className="datetime">{note.datetime}</div>
-                    <button className="trash button">
+                    <button className="trash button" onClick={() => this.deleteNote(note.id)}>
                       <i className="iconfont icon-trash"></i>
                     </button>
                   </div>
@@ -115,7 +117,7 @@ class App extends Component {
               <textarea value={currentNote.body}
                 onChange={e => this.updateNote('body', e.target.value)}></textarea>
             </div>
-            <div className="preview">
+            <div className="preview markdown-body">
               <div dangerouslySetInnerHTML={{ __html: marked(currentNote.body || '') }}></div>
             </div>
           </div>
@@ -194,6 +196,38 @@ class App extends Component {
       body: JSON.stringify(note)
     }
     fetch('http://localhost:4000/notes/', opts)
+      .then(res => res.json())
+      .then(data => {
+        this.reloadNotes();
+      })  
+  }
+
+  deleteNote(id) {
+    Swal.fire({
+      title: '确定要删除吗？',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    }).then((result) => {
+      if (result.value) {
+        this.doDeleteNote(id);
+      }
+    })
+  }
+
+
+  doDeleteNote(id) {
+    var opts = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    fetch('http://localhost:4000/notes/' + id, opts)
       .then(res => res.json())
       .then(data => {
         this.reloadNotes();
