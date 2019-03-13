@@ -235,6 +235,7 @@ ul, li {
           border: none;
           background: #21272c;
           color: #fff;
+          line-height: 1.5;
           &:focus {
             outline: none;
           }
@@ -245,6 +246,12 @@ ul, li {
         padding: 10px 20px;
         p {
           margin: 0.5em 0;
+        }
+        ul {
+          li {
+            display: list-item;
+            list-style-type: disc;
+          }
         }
       }
     }
