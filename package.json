@@ -29,5 +29,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "serve": "^10.1.2"
+  },
+  "homepage" : "http://qingguatang.github.io/fe-react-evernote"
 }
