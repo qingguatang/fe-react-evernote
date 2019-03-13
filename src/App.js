@@ -98,7 +98,7 @@ class App extends Component {
                   </div>
                   <div className="footer">
                     <div className="datetime">{dateUtil.friendly(note.datetime)}</div>
-                    <button className="trash button" onClick={() => this.deleteNote(note.id)}>
+                    <button className="trash button" onClick={() => this.requestDeleteNote(note.id)}>
                       <i className="iconfont icon-trash"></i>
                     </button>
                   </div>
@@ -168,7 +168,6 @@ class App extends Component {
   loadNote(id) {
     request('/notes/' + id)
       .then(note => {
-        console.log(note)
         this.setState({ currentNote: note });
       })  
   }
@@ -195,8 +194,17 @@ class App extends Component {
     }
     request('/notes/' + note.id, opts)
       .then(data => {
-        console.log('success!', data);
+        this.updateNoteFinish(data);
       })  
+  }
+
+  updateNoteFinish(note) {
+    var notes = this.state.notes;
+    var index = notes.findIndex(o => o.id === note.id);
+    if (index !== -1) {
+      notes[index] = note;
+    }
+    this.setState({ notes: notes });
   }
 
   addNote() {
@@ -215,14 +223,13 @@ class App extends Component {
       },
       body: JSON.stringify(note)
     }
-
     request('/notes/', opts)
       .then(data => {
         this.reloadNotes();
       })  
   }
 
-  deleteNote(id) {
+  requestDeleteNote(id) {
     Swal.fire({
       title: '确定要删除吗？',
       type: 'question',
@@ -233,12 +240,12 @@ class App extends Component {
       cancelButtonText: '取消'
     }).then((result) => {
       if (result.value) {
-        this.doDeleteNote(id);
+        this.deleteNote(id);
       }
     })
   }
 
-  doDeleteNote(id) {
+  deleteNote(id) {
     var opts = {
       method: 'DELETE',
       headers: {
@@ -258,5 +265,5 @@ export default App;
 
 function getBrief(body) {
   body = body || '';
-  return body.length > 100 ? body.substr(0, 70) + '...' : '';
+  return body.length > 100 ? body.substr(0, 70) + '...' : body;
 }
