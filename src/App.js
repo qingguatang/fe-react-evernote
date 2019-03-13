@@ -24,6 +24,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    document.title = '实战Evernote';
+
     window.addEventListener('beforeunload', () => {
       var data = {
         currentBookIndex: this.state.currentBookIndex,
@@ -124,7 +126,8 @@ class App extends Component {
           <div className="body">
             <div className="editor">
               <textarea value={currentNote.body}
-                onChange={e => this.updateNote('body', e.target.value)}></textarea>
+                onChange={e => this.updateNote('body', e.target.value)}
+                onKeyDown={e => this.handleTextKeydown(e)}></textarea>
             </div>
             <div className="preview markdown-body">
               <div dangerouslySetInnerHTML={{ __html: marked(currentNote.body || '') }}></div>
@@ -257,6 +260,20 @@ class App extends Component {
       .then(data => {
         this.reloadNotes();
       })  
+  }
+
+  handleTextKeydown(e) {
+    if (e.keyCode === 9) {
+      var el = e.target;
+      e.preventDefault();
+      var selectionStartPos = el.selectionStart;
+      var selectionEndPos = el.selectionEnd;
+      var oldContent = el.value;
+
+      el.value = oldContent.substring(0, selectionStartPos) + '\t' +
+          oldContent.substring(selectionEndPos);
+      el.selectionStart = el.selectionEnd = selectionStartPos + 1;
+    }
   }
 }
 
