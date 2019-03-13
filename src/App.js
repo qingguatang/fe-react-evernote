@@ -8,7 +8,6 @@ import dateUtil from './utils/date';
 import request from './utils/request';
 import './App.scss';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -278,7 +277,6 @@ class App extends Component {
 }
 
 export default App;
-
 
 function getBrief(body) {
   body = body || '';
