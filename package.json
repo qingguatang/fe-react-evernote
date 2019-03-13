@@ -19,7 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "json-server --watch --port 4000 db.json"
+    "server": "json-server --watch --port 4000 db.json",
+    "deploy": "git subtree push --prefix build origin gh-pages"
   },
   "eslintConfig": {
     "extends": "react-app"
