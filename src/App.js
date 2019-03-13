@@ -159,7 +159,7 @@ class App extends Component {
     request('/notes?notebookId=' + book.id)
       .then(notes => {
         this.setState({ notes: notes });
-      }) 
+      })
   }
 
   reloadNotes() {
@@ -171,7 +171,7 @@ class App extends Component {
     request('/notes/' + id)
       .then(note => {
         this.setState({ currentNote: note });
-      })  
+      })
   }
 
   getNoteBook(bookId) {
@@ -197,7 +197,7 @@ class App extends Component {
     request('/notes/' + note.id, opts)
       .then(data => {
         this.updateNoteFinish(data);
-      })  
+      });
   }
 
   updateNoteFinish(note) {
@@ -228,7 +228,7 @@ class App extends Component {
     request('/notes/', opts)
       .then(data => {
         this.reloadNotes();
-      })  
+      })
   }
 
   requestDeleteNote(id) {
@@ -243,6 +243,10 @@ class App extends Component {
     }).then((result) => {
       if (result.value) {
         this.deleteNote(id);
+        var current = this.state.currentNote;
+        if (current && current.id === id) {
+          this.setState({ currentNote: null });
+        }
       }
     })
   }
@@ -258,7 +262,7 @@ class App extends Component {
     request('/notes/' + id, opts)
       .then(data => {
         this.reloadNotes();
-      })  
+      })
   }
 
   handleTextKeydown(e) {
