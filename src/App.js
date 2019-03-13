@@ -92,7 +92,7 @@ class App extends Component {
                       onClick={() => this.loadNote(note.id)}>
                     <div className="header">{note.title}</div>
                     <div className="body">
-                    {note.body}
+                    {getBrief(note.body)}
                     </div>
                   </div>
                   <div className="footer">
@@ -242,7 +242,6 @@ class App extends Component {
     })
   }
 
-
   doDeleteNote(id) {
     var opts = {
       method: 'DELETE',
@@ -260,3 +259,9 @@ class App extends Component {
 }
 
 export default App;
+
+
+function getBrief(body) {
+  body = body || '';
+  return body.length > 100 ? body.substr(0, 70) + '...' : '';
+}
