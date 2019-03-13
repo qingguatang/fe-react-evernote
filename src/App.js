@@ -5,6 +5,7 @@ import marked from 'marked';
 import cx from 'classnames';
 import Swal from 'sweetalert2';
 import dateUtil from './utils/date';
+import request from './utils/request';
 import './App.scss';
 
 
@@ -137,8 +138,7 @@ class App extends Component {
 
   loadNotebooks(editData) {
     editData = editData || {};
-    fetch('http://localhost:4000/notebooks')
-      .then(res => res.json())
+    request('/notebooks')
       .then(notebooks => {
         this.setState({ notebooks: notebooks }, () => {
           var bookIndex = editData.currentBookIndex || 0;
@@ -154,8 +154,7 @@ class App extends Component {
     this.setState({ currentBookIndex: bookIndex });
     var data = this.state.notebooks;
     var book = data[bookIndex];
-    fetch('http://localhost:4000/notes?notebookId=' + book.id)
-      .then(res => res.json())
+    request('/notes?notebookId=' + book.id)
       .then(notes => {
         this.setState({ notes: notes });
       }) 
@@ -167,8 +166,7 @@ class App extends Component {
   }
 
   loadNote(id) {
-    fetch('http://localhost:4000/notes/' + id)
-      .then(res => res.json())
+    request('/notes/' + id)
       .then(note => {
         console.log(note)
         this.setState({ currentNote: note });
@@ -195,8 +193,7 @@ class App extends Component {
       },
       body: JSON.stringify(note)
     }
-    fetch('http://localhost:4000/notes/' + note.id, opts)
-      .then(res => res.json())
+    request('/notes/' + note.id, opts)
       .then(data => {
         console.log('success!', data);
       })  
@@ -219,8 +216,7 @@ class App extends Component {
       body: JSON.stringify(note)
     }
 
-    fetch('http://localhost:4000/notes/', opts)
-      .then(res => res.json())
+    request('/notes/', opts)
       .then(data => {
         this.reloadNotes();
       })  
@@ -250,8 +246,7 @@ class App extends Component {
       }
     }
 
-    fetch('http://localhost:4000/notes/' + id, opts)
-      .then(res => res.json())
+    request('/notes/' + id, opts)
       .then(data => {
         this.reloadNotes();
       })  
