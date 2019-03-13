@@ -32,6 +32,5 @@
   ],
   "devDependencies": {
     "serve": "^10.1.2"
-  },
-  "homepage" : "https://qingguatang.github.io/fe-react-evernote"
+  }
 }
