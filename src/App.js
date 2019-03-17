@@ -9,7 +9,8 @@ class App extends Component {
     super(props);
     this.state = {
       notebooks: [],
-      currentBookIndex: 0
+      currentBookIndex: 0,
+      notes: []
     }
   };
 
@@ -17,6 +18,8 @@ class App extends Component {
     axios.get('http://localhost:3100/notebooks').then(res => {
       console.log(res.data);
       this.setState({ notebooks: res.data });
+      var book = res.data[this.state.currentBookIndex];
+      this.loadNotes(book.id);
     })
   }
 
@@ -60,20 +63,25 @@ class App extends Component {
           <div className="header">读书笔记</div>
           <div className="body">
             <ul className="notes-list">
-              <li>
+            {
+              this.state.notes.map((note, index) => (
+               <li key={note.id}>
                 <div className="note-brief">
-                  <div className="header">新建笔记</div>
+                  <div className="header">{note.title}</div>
                   <div className="body">
-                    笔记简要内容
+                  {note.body}
                   </div>
                   <div className="footer">
-                    <div className="datetime">2019-3-5</div>
+                    <div className="datetime">{note.datetime}</div>
                     <button className="trash button">
                       <i className="iconfont icon-trash"></i>
                     </button>
                   </div>
                 </div>
-              </li>
+              </li> 
+              ))
+            }
+              
             </ul>
           </div>
         </div>
@@ -102,6 +110,16 @@ class App extends Component {
 
   handleBookSelect(index) {
     this.setState({ currentBookIndex: index });
+    var book = this.state.notebooks[index];
+    // book.id
+    this.loadNotes(book.id);
+  }
+
+  loadNotes(id) {
+    axios.get('http://localhost:3100/notes?bookId=' + id).then(res => {
+      console.log(res.data);
+      this.setState({ notes: res.data });
+    })
   }
 }
 
