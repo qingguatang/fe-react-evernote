@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notebooks: []
+      notebooks: [],
+      currentBookIndex: 0
     }
   };
 
@@ -40,7 +41,8 @@ class App extends Component {
                 <ul className="notebooks-list">
                   {
                     notebooks.map((notebook, index) => (
-                    <li key={notebook.id} className="notebook-item">
+                    <li key={notebook.id} className={"notebook-item " + (this.state.currentBookIndex === index ? 'active' : '')}
+                        onClick={() => this.handleBookSelect(index)}>
                       <div className="title has-icon">
                         <i className="iconfont icon-book"></i>
                         {notebook.name}
@@ -96,6 +98,10 @@ class App extends Component {
         </div>
       </div>
     );
+  }
+
+  handleBookSelect(index) {
+    this.setState({ currentBookIndex: index });
   }
 }
 
