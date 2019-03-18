@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import 'normalize.css';
+import 'github-markdown-css';
 import axios from 'axios';
+import marked from 'marked';
 import './App.scss';
 
 
@@ -10,7 +12,8 @@ class App extends Component {
     this.state = {
       notebooks: [],
       currentBookIndex: 0,
-      notes: []
+      notes: [],
+      currentNote: null
     }
   };
 
@@ -25,6 +28,7 @@ class App extends Component {
 
   render() {
     var notebooks = this.state.notebooks;
+    var currentNote = this.state.currentNote;
     return (
       <div className="app">
         <div className="sidebar">
@@ -68,8 +72,8 @@ class App extends Component {
                <li key={note.id}>
                 <div className="note-brief">
                   <div className="header">{note.title}</div>
-                  <div className="body">
-                  {note.body}
+                  <div className="body" onClick={() => this.handleEditNote(note.id)}>
+                    {note.body}
                   </div>
                   <div className="footer">
                     <div className="datetime">{note.datetime}</div>
@@ -85,25 +89,27 @@ class App extends Component {
             </ul>
           </div>
         </div>
-        <div className="note-panel">
-          <div className="header">
-            <div className="category has-icon">
-              <i className="iconfont icon-notebook"></i>
-              我的2018
+        { currentNote ? 
+          <div className="note-panel">
+            <div className="header">
+              <div className="category has-icon">
+                <i className="iconfont icon-notebook"></i>
+                我的2018
+              </div>
+              <div className="title">
+                <input name="title" type="text" value={currentNote.title} onChange={e => this.handleFieldChange(e)} />
+              </div>
             </div>
-            <div className="title">
-              <input type="text"  />
+            <div className="body">
+              <div className="editor">
+                <textarea name="body" value={currentNote.body} onChange={e => this.handleFieldChange(e)}></textarea>
+              </div>
+              <div className="preview markdown-body">
+                <div dangerouslySetInnerHTML={{__html: marked(currentNote.body)}}></div>
+              </div>
             </div>
-          </div>
-          <div className="body">
-            <div className="editor">
-              <textarea></textarea>
-            </div>
-            <div className="preview">
-              <div>内容</div>
-            </div>
-          </div>
-        </div>
+          </div> : null
+        }
       </div>
     );
   }
@@ -138,6 +144,20 @@ class App extends Component {
   reloadNotes() {
     var book = this.state.notebooks[this.state.currentBookIndex];
     this.loadNotes(book.id);
+  }
+
+  handleEditNote(id) {
+    axios.get('http://localhost:3100/notes/' + id).then(res => {
+      this.setState({ currentNote: res.data });
+    });
+  }
+
+  handleFieldChange(e) {
+    var currentNote = this.state.currentNote;
+    var name = e.target.name;
+    currentNote[name] = e.target.value;
+
+    this.setState({ currentNote: currentNote });
   }
 }
 
