@@ -29,7 +29,7 @@ class App extends Component {
       <div className="app">
         <div className="sidebar">
           <div className="header">
-            <button className="button adder">
+            <button className="button adder" onClick={() => this.handleAddNote()}>
               <i className="iconfont icon-add"></i>
               新建笔记
             </button>
@@ -108,6 +108,19 @@ class App extends Component {
     );
   }
 
+  handleAddNote() {
+    var book = this.state.notebooks[this.state.currentBookIndex];
+    var note = {
+      title: '新建笔记',
+      body: '',
+      datetime: new Date().toISOString(),
+      bookId: book.id
+    };
+    axios.post('http://localhost:3100/notes', note).then(() => {
+      this.reloadNotes();
+    });
+  }
+
   handleBookSelect(index) {
     this.setState({ currentBookIndex: index });
     var book = this.state.notebooks[index];
@@ -120,6 +133,11 @@ class App extends Component {
       console.log(res.data);
       this.setState({ notes: res.data });
     })
+  }
+
+  reloadNotes() {
+    var book = this.state.notebooks[this.state.currentBookIndex];
+    this.loadNotes(book.id);
   }
 }
 
