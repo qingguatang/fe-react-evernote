@@ -71,9 +71,11 @@ class App extends Component {
               this.state.notes.map((note, index) => (
                <li key={note.id}>
                 <div className="note-brief">
-                  <div className="header">{note.title}</div>
-                  <div className="body" onClick={() => this.handleEditNote(note.id)}>
-                    {note.body}
+                  <div class="box" onClick={() => this.handleEditNote(note.id)}>
+                    <div className="header">{note.title}</div>
+                    <div className="body">
+                      {note.body}
+                    </div>
                   </div>
                   <div className="footer">
                     <div className="datetime">{note.datetime}</div>
