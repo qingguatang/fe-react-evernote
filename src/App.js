@@ -3,6 +3,7 @@ import 'normalize.css';
 import 'github-markdown-css';
 import axios from 'axios';
 import marked from 'marked';
+import cx from 'classnames';
 import './App.scss';
 
 
@@ -70,7 +71,7 @@ class App extends Component {
             {
               this.state.notes.map((note, index) => (
                <li key={note.id}>
-                <div className="note-brief">
+                <div className={cx("note-brief", {active: currentNote && currentNote.id === note.id})}>
                   <div className="box" onClick={() => this.handleEditNote(note.id)}>
                     <div className="header">{note.title}</div>
                     <div className="body">
@@ -160,6 +161,15 @@ class App extends Component {
     currentNote[name] = e.target.value;
 
     this.setState({ currentNote: currentNote });
+
+    // axios.put('xxx', currentNote);
+
+    var notes = this.state.notes;
+    var index = notes.findIndex(o => o.id === currentNote.id);
+    if (index !== -1) {
+      notes[index] = currentNote;
+      this.setState({ notes: notes });
+    }
   }
 }
 
